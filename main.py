@@ -1,9 +1,11 @@
 from bs4 import BeautifulSoup
 import requests
+import time
 
 headers = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36"}
 
+time.sleep(30)
 # Create the URLs for each page in the 2010s Best of Decade List
 url = 'https://www.goodreads.com/list/best_of_decade/2010?id=4093.Best_Books_of_the_Decade_2010s&page={}'
 for page in range(1, 2):
@@ -37,3 +39,4 @@ for page in range(1, 2):
         print('Book Title:', title.strip(), '\nAuthor:', author, '\nRating:', rating_tag, '\nLink:', book_link2,
               '\nNumber of Pages:', numpages, '\nBook Format:', bookformat, '\nGenre:', genre, '\nLanguage:', language,
               '\n---')
+
