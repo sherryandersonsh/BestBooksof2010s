@@ -8,9 +8,12 @@
 
 
 
-## Code and Resources 
+## Packages and Tools
 **Python Version:** 3.9.  
-**Packages:** beautifulsoup, requests, time, psycopg2           
+**Packages:** beautifulsoup, requests, time, psycopg2.   
+**IDE:** PyCharm
+
+## Tutorials and Articles Used
 **Scraper Article:** <https://medium.com/technofunnel/web-scraping-with-python-using-beautifulsoup-76b710e3e92f>  
 **Connecting to DB Articles:** <https://pynative.com/python-postgresql-tutorial/#h-python-postgresql-database-connection>
 
