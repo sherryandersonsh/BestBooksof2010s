@@ -77,7 +77,7 @@ for page in range(1, 70):
               '\n*')
 ```
 
-## Saving the data
+## Storing the data
 
 In progress
 
