@@ -6,15 +6,14 @@ import psycopg2
 headers = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36"}
 
-
 time.sleep(3)
-# Create the URLs for each page in the 2010s Best of Decade List
 
+# Create the URLs for each page in the 2010s Best of Decade List
 url = 'https://www.goodreads.com/list/best_of_decade/2010?id=4093.Best_Books_of_the_Decade_2010s&page={}'
+
 
 # Function to save the data to database
 def savedata():
-
     try:
         connection = psycopg2.connect(user="postgres",
                                       password="Polopo00!",
@@ -24,8 +23,8 @@ def savedata():
         cursor = connection.cursor()
 
         dbquery = "INSERT INTO books (title, author, rating, booklink, pages, bookformat, genre, language) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
-        datainsert = (title, author, rating, book_link2, numpages, bookformat, genre, language)
-        cursor.execute(dbquery, datainsert)
+        scrapeddata = (title, author, rating, book_link2, numpages, bookformat, genre, language)
+        cursor.execute(dbquery, scrapeddata)
 
         connection.commit()
         count = cursor.rowcount
@@ -39,10 +38,10 @@ def savedata():
         if connection:
             cursor.close()
             connection.close()
-            print("PostgreSQL connection is closed")
+            print("PostgreSQL connection is closed", '\n---------------------------------------------------')
 
 
-for page in range(1, 2):
+for page in range(1, 70):
     urllinks = url.format(page)
     page = +1
     print(urllinks)
@@ -65,14 +64,24 @@ for page in range(1, 2):
         grbookpage = requests.get(book_link2)
         databookpage = grbookpage.text
         soupbookpage = BeautifulSoup(databookpage, "html.parser")
-        bookformat = soupbookpage.find("span", {"itemprop": "bookFormat"}).text
-        numpages = soupbookpage.find("span", {"itemprop": "numberOfPages"}).text
-        genre = soupbookpage.find("a", {'class': 'actionLinkLite bookPageGenreLink'}).text
-        language = soupbookpage.find("div", {"itemprop": "inLanguage"}).text
+        try:
+            bookformat = soupbookpage.find("span", {"itemprop": "bookFormat"}).text
+        except AttributeError:
+            print('No book format')
+        try:
+            numpages = soupbookpage.find("span", {"itemprop": "numberOfPages"}).text
+        except AttributeError:
+            print('No page number')
+        try:
+            genre = soupbookpage.find("a", {'class': 'actionLinkLite bookPageGenreLink'}).text
+        except AttributeError:
+            print('No genre')
+        try:
+            language = soupbookpage.find("div", {"itemprop": "inLanguage"}).text
+        except AttributeError:
+            print('No language')
 
         print('Book Title:', title.strip(), '\nAuthor:', author, '\nRating:', rating, '\nLink:', book_link2,
-              '\nNumber of Pages:', numpages, '\nBook Format:', bookformat, '\nGenre:', genre, '\nLanguage:',
-              language,
-              '\n---')
+              '\nNumber of Pages:', numpages, '\nBook Format:', bookformat, '\nGenre:', genre, '\nLanguage:', language,
+              '\n*')
         savedata()
-
