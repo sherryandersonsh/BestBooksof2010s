@@ -16,7 +16,7 @@ url = 'https://www.goodreads.com/list/best_of_decade/2010?id=4093.Best_Books_of_
 def savedata():
     try:
         connection = psycopg2.connect(user="postgres",
-                                      password="Polopo00!",
+                                      password="postgres",
                                       host="127.0.0.1",
                                       port="5432",
                                       database="GR2010sBestBooks")
