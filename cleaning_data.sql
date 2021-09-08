@@ -1,3 +1,4 @@
+-- Created table to capture scpraped data
 CREATE TABLE books
 (
     id         serial,
