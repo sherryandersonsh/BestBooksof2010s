@@ -117,7 +117,7 @@ def savedata():
 
 ## Data Cleaning
 
-- Extracted from the rating column the Average Rating and the Total Ratings
+- Extracted from a string in the rating column the Average Rating and the Total Ratings
 - Removed the word pages from the pages column
 
  ![alt text](https://github.com/sherryandersonsh/BestBooksof2010s/blob/31a7b7ebbf212a81222e2939f16a714a9b9c16e4/images/datacleaningscreenshot.png "cleaningdata")
