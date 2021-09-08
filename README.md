@@ -3,23 +3,29 @@
 ## Project Status: In Progress
 
 ## _Project Overview_
+
 * Scraped over 6,000 books from Goodreads 2010s Best Books list using Beautiful Soup and Requests.
 * Created a function to save the data to a PostgreSQL database.
 
-
-
 ## Packages and Tools
+
 **Python Version:** 3.9.  
 **Packages:** beautifulsoup, requests, time, psycopg2.   
 **IDE:** PyCharm
 
 ## Tutorials and Articles Used
+
 **Scraper Article:** <https://medium.com/technofunnel/web-scraping-with-python-using-beautifulsoup-76b710e3e92f>  
-**Connecting to DB Articles:** <https://pynative.com/python-postgresql-tutorial/#h-python-postgresql-database-connection>
+**Connecting to DB
+Articles:** <https://pynative.com/python-postgresql-tutorial/#h-python-postgresql-database-connection>
 
 ## Web Scraping
-I scraped 69 pages from this [book list](https://www.goodreads.com/list/best_of_decade/2010?id=4093.Best_Books_of_the_Decade_2010s&page=1). The following was collected:  
-* Book Title. 
+
+I scraped 69 pages from
+this [book list](https://www.goodreads.com/list/best_of_decade/2010?id=4093.Best_Books_of_the_Decade_2010s&page=1). The
+following was collected:
+
+* Book Title.
 * Author
 * Average Rating
 * Total Ratings
@@ -29,9 +35,8 @@ I scraped 69 pages from this [book list](https://www.goodreads.com/list/best_of_
 * Genre
 * Language
 
-
-
 ```python
+url = 'https://www.goodreads.com/list/best_of_decade/2010?id=4093.Best_Books_of_the_Decade_2010s&page={}'
 for page in range(1, 70):
     urllinks = url.format(page)
     page = +1
@@ -79,14 +84,48 @@ for page in range(1, 70):
 
 ## Storing the data
 
-In progress
+While the scraping was in progress, the data was loaded into a PostgreSQL database to prevent any loss.
+
+```python
+def savedata():
+    try:
+        connection = psycopg2.connect(user="postgres",
+                                      password="postgres",
+                                      host="127.0.0.1",
+                                      port="5432",
+                                      database="GR2010sBestBooks")
+        cursor = connection.cursor()
+
+        dbquery = "INSERT INTO books (title, author, rating, booklink, pages, bookformat, genre, language) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
+        scrapeddata = (title, author, rating, book_link2, numpages, bookformat, genre, language)
+        cursor.execute(dbquery, scrapeddata)
+
+        connection.commit()
+        count = cursor.rowcount
+        print(count, "Data inserted successfully")
+
+    except (Exception, psycopg2.Error) as error:
+        print("Failed to insert data", error)
+
+    finally:
+        # closing database connection.
+        if connection:
+            cursor.close()
+            connection.close()
+            print("PostgreSQL connection is closed", '\n---------------------------------------------------')
+```
 
 ## Data Cleaning
 
-In Progress
+- Extracted from the rating column the Average Rating and the Total Ratings
+- Removed the word pages from the pages column
+
+ ![alt text](https://github.com/sherryandersonsh/BestBooksof2010s/blob/31a7b7ebbf212a81222e2939f16a714a9b9c16e4/images/datacleaningscreenshot.png "cleaningdata")
 
 ## Exploratory Data Analysis
+
 In Progress
 
 ## Data Visualization
+
 In Progress
